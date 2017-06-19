@@ -5,28 +5,28 @@ def xorbytes(a,b):
 	return bytearray(i ^ j for (i,j) in zip(bytearray.fromhex(a),bytearray.fromhex(b)))
 
 def breaksinglexor(ciphertext,lang='eng',top=5):
-	languages = {	'eng' : ['the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'I', 'it', 'for', 'not', 'on', 'with', 'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her', 'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time', 'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year', 'your', 'good', 'some', 'could', 'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us'], 
+	languages = {	'eng' : " etaoinshrdlucmfwypvbgkjqxz",
 					'fra' : [],
 					'esp' : [],
 					'deu' : [],
 					'por' : []}
 	freq = dict()
 	for key in range(256):
-		plaintext = xorbytes(ciphertext,bytearray([key]*len(ciphertext)).hex())
+		plaintext = xorbytes(ciphertext,bytearray([key]*int(len(ciphertext)/2)).hex())
 		try:
 			strplaintext = plaintext.decode('utf-8')
 		except UnicodeDecodeError:
 			continue
 		count = 0
-		multiplicator = 1
-		for word in languages[lang]:
-			count += strplaintext.count(word) * multiplicator
-			multiplicator += 1
-		freq[bytes([key]).hex()] = (count,plaintext)
+		multiplicator = len(languages[lang])
+		for letter in languages[lang]:
+			count += strplaintext.count(letter) * multiplicator
+			multiplicator -= 1
+		freq[bytes([key]).hex()] = count
 	sorted_freq = sorted(freq.items(), key=operator.itemgetter(1), reverse=True)
 	ret = list()
 	for i in sorted_freq[:top]:
-		ret.append({'key' : i[0], 'plaintext' : i[1][1].decode('utf-8')})
+		ret.append({'key' : i[0], 'plaintext' : xorbytes(ciphertext,i[0]*int(len(ciphertext)/2)).decode('utf-8'), 'count' : i[1]})
 	return ret
 
 if __name__ == "__main__":
