@@ -11,4 +11,4 @@ Solved challenges from <a href='https://cryptopals.com'>Cryptopals</a>:
 - [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set1/challenge5'>Implement repeating-key XOR</a>
 - [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set1/challenge6'>Break repeating-key XOR</a>
 - [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set1/challenge7'>AES in ECB mode</a>
-- [ ] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set1/challenge8'>Detect AES in ECB mode</a>
+- [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set1/challenge8'>Detect AES in ECB mode</a>
