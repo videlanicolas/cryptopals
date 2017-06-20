@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import argparse, os, base64
+import argparse, os, base64, challenge3
 from Crypto.Cipher import AES
 
 class AESCipher(object):
@@ -13,6 +13,11 @@ class AESCipher(object):
 		cipher = AES.new(self.key)
 		return cipher.decrypt(block)
 
+	def __encrypt_single_block(self,block):
+		assert type(block) == bytes and len(block) in [16,24,32]
+		cipher = AES.new(self.key)
+		return cipher.encrypt(block)
+
 	def pad(self,data,mode='pkcs7'):
 		if type(data) != bytes:
 			data = bytes(data,'utf-8')
@@ -22,11 +27,34 @@ class AESCipher(object):
 			else:
 				return data + bytes([len(self.key) - len(data)])*(len(self.key) - len(data))
 
-	def decrypt(self,data,mode='ECB'):
+	def encrypt(self,data,mode='ECB',iv=None):
 		ret = list()
-		for block in self.chunks(data,len(self.key)):
-			ret.append(self.__decrypt_single_block(block))
-		return b''.join(ret)
+		if not iv:
+			iv = b'\x00'*len(self.key)
+		if mode == 'ECB':
+			for block in self.chunks(data,len(self.key)):
+				ret.append(self.__encrypt_single_block(block))
+			return b''.join(ret)
+		elif mode == 'CBC':
+			for block in self.chunks(data,len(self.key)):
+				iv = self.__decrypt_single_block(challenge3.xorbytes(block,iv))
+				ret.append(iv)
+			return b''.join(ret)
+
+	def decrypt(self,data,mode='ECB',iv=None):
+		ret = list()
+		if not iv:
+			iv = b'\x00'*len(self.key)
+		if mode == 'ECB':
+			for block in self.chunks(data,len(self.key)):
+				ret.append(self.__decrypt_single_block(block))
+			return b''.join(ret)
+		elif mode == 'CBC':
+			for block in self.chunks(data,len(self.key)):
+				ret.append(challenge3.xorbytes(self.__decrypt_single_block(block),iv))
+				iv = block
+			return b''.join(ret)
+
 
 if __name__ == "__main__":
 	DESCRIPTION = """There's a base64 encrypted file with AES-128-ECB under the key "YELLOW SUBMARINE", decrypt it.
