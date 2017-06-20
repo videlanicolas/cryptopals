@@ -2,7 +2,27 @@
 import argparse, operator
 
 def xorbytes(a,b):
-	return bytearray(i ^ j for (i,j) in zip(bytearray.fromhex(a),bytearray.fromhex(b)))
+	if type(a) == bytearray:
+		if type(b) == bytes:
+			return bytearray(i ^ j for (i,j) in zip(a,bytearray(b)))
+		elif type(b) == bytearray:
+			return bytearray(i ^ j for (i,j) in zip(a,b))
+		else:
+			return bytearray(i ^ j for (i,j) in zip(a,bytearray.fromhex(b)))
+	elif type(a) == bytes:
+		if type(b) == bytes:
+			return bytearray(i ^ j for (i,j) in zip(bytearray(a),bytearray(b)))
+		elif type(b) == bytearray:
+			return bytearray(i ^ j for (i,j) in zip(bytearray(a),b))
+		else:
+			return bytearray(i ^ j for (i,j) in zip(bytearray(a),bytearray.fromhex(b)))
+	else:
+		if type(b) == bytes:
+			return bytearray(i ^ j for (i,j) in zip(bytearray.fromhex(a),bytearray(b)))
+		elif type(b) == bytearray:
+			return bytearray(i ^ j for (i,j) in zip(bytearray.fromhex(a),b))
+		else:
+			return bytearray(i ^ j for (i,j) in zip(bytearray.fromhex(a),bytearray.fromhex(b)))
 
 def breaksinglexor(ciphertext,lang='eng',top=5):
 	languages = {	'eng' : " etaoinshrdlucmfwypvbgkjqxz",
