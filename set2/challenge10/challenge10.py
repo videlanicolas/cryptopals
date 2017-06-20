@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import argparse, os, base64, challenge7
-from Crypto.Cipher import AES
 
 if __name__ == "__main__":
 	DESCRIPTION = """Decrypt a base64 encoded file using AES-128-CBC mode.

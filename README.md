@@ -17,7 +17,7 @@ Solved challenges from <a href='https://cryptopals.com'>Cryptopals</a>:
 
 - [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge9'>Implement PKCS#7 padding</a>
 - [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge10'>Implement CBC mode</a>
-- [ ] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge11'>An ECB/CBC detection oracle</a>
+- [x] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge11'>An ECB/CBC detection oracle</a>
 - [ ] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge12'>Byte-at-a-time ECB decryption (Simple)</a>
 - [ ] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge13'>ECB cut-and-paste</a>
 - [ ] <a href='https://github.com/videlanicolas/cryptopals/edit/master/set2/challenge14'>Byte-at-a-time ECB decryption (Harder)</a>

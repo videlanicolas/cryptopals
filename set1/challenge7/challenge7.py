@@ -22,10 +22,14 @@ class AESCipher(object):
 		if type(data) != bytes:
 			data = bytes(data,'utf-8')
 		if mode == 'pkcs7':
-			if len(self.key) - len(data) == 0:
+			_data = self.chunks(data,len(self.key))[-1]
+			if len(self.key) - len(_data) == 0:
 				return data + bytes([len(self.key)])*len(self.key)
 			else:
-				return data + bytes([len(self.key) - len(data)])*(len(self.key) - len(data))
+				return data + bytes([len(self.key) - len(_data)])*(len(self.key) - len(_data))
+
+	def unpad(self,data,mode='pkcs7'):
+		return data
 
 	def encrypt(self,data,mode='ECB',iv=None):
 		ret = list()
@@ -37,7 +41,7 @@ class AESCipher(object):
 			return b''.join(ret)
 		elif mode == 'CBC':
 			for block in self.chunks(data,len(self.key)):
-				iv = self.__decrypt_single_block(challenge3.xorbytes(block,iv))
+				iv = self.__encrypt_single_block(bytes(challenge3.xorbytes(block,iv)))
 				ret.append(iv)
 			return b''.join(ret)
 
