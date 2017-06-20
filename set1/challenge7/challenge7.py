@@ -13,6 +13,15 @@ class AESCipher(object):
 		cipher = AES.new(self.key)
 		return cipher.decrypt(block)
 
+	def pad(self,data,mode='pkcs7'):
+		if type(data) != bytes:
+			data = bytes(data,'utf-8')
+		if mode == 'pkcs7':
+			if len(self.key) - len(data) == 0:
+				return data + bytes([len(self.key)])*len(self.key)
+			else:
+				return data + bytes([len(self.key) - len(data)])*(len(self.key) - len(data))
+
 	def decrypt(self,data,mode='ECB'):
 		ret = list()
 		for block in self.chunks(data,len(self.key)):
